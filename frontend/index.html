@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarEvents — Matukio Dar es Salaam</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --night: #0A0F1E;
+    --navy: #1A2744;
+    --orange: #FF6B2B;
+    --gold: #FFD700;
+    --dim: #2D3A5C;
+    --mist: #F0F4FF;
+    --text: #C8D4F0;
+    --subtext: #7A8DB8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--night);
+    color: var(--mist);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    background: rgba(10,15,30,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,107,43,0.15);
+  }
+  .logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 26px; font-weight: 700; letter-spacing: 1px;
+    color: var(--mist);
+  }
+  .logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--subtext); text-decoration: none;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .btn-ghost {
+    background: none; border: 1px solid var(--dim);
+    color: var(--text); padding: 8px 20px; border-radius: 6px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: all 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-primary {
+    background: var(--orange); border: none;
+    color: #fff; padding: 9px 22px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .btn-primary:hover { background: #e85a1f; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 40px 60px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 70% 50%, rgba(255,107,43,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,215,0,0.04) 0%, transparent 60%);
+  }
+  .city-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(255,107,43,0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,43,0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,107,43,0.12);
+    border: 1px solid rgba(255,107,43,0.3);
+    border-radius: 20px; padding: 6px 16px;
+    font-size: 12px; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--orange);
+    width: fit-content; margin-bottom: 28px; position: relative;
+  }
+  .pulse-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--orange); position: relative;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,43,0.7); }
+    50% { box-shadow: 0 0 0 8px rgba(255,107,43,0); }
+  }
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(52px, 9vw, 110px);
+    font-weight: 700; line-height: 0.95;
+    letter-spacing: -1px;
+    max-width: 900px;
+    position: relative;
+  }
+  .hero h1 .accent { color: var(--orange); }
+  .hero h1 .gold { color: var(--gold); }
+  .hero-sub {
+    margin-top: 28px; max-width: 520px;
+    color: var(--subtext); font-size: 17px; line-height: 1.7;
+    position: relative;
+  }
+  .hero-actions { display: flex; gap: 16px; margin-top: 40px; position: relative; flex-wrap: wrap; }
+  .btn-lg {
+    padding: 14px 32px; border-radius: 8px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.25s;
+  }
+  .btn-orange { background: var(--orange); color: #fff; border: none; }
+  .btn-orange:hover { background: #e85a1f; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,107,43,0.35); }
+  .btn-outline { background: none; border: 1px solid var(--dim); color: var(--mist); }
+  .btn-outline:hover { border-color: var(--mist); }
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+  }
+  .stat-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px; font-weight: 700; color: var(--mist);
+  }
+  .stat-num span { color: var(--orange); }
+  .stat-label { font-size: 12px; color: var(--subtext); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  /* ─── FILTER BAR ─── */
+  .filter-section {
+    padding: 0 40px; margin-top: -20px; position: relative; z-index: 10;
+  }
+  .filter-bar {
+    background: var(--navy);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 20px 28px;
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+  }
+  .search-wrap {
+    flex: 1; min-width: 220px;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px; padding: 0 14px; height: 42px;
+  }
+  .search-icon { font-size: 16px; opacity: 0.5; }
+  .search-wrap input {
+    background: none; border: none; outline: none;
+    color: var(--mist); font-size: 14px;
+    font-family: 'Inter', sans-serif; width: 100%;
+  }
+  .search-wrap input::placeholder { color: var(--subtext); }
+  .filter-chip {
+    padding: 10px 18px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: none; color: var(--subtext);
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .filter-chip:hover, .filter-chip.active {
+    border-color: var(--orange); color: var(--orange);
+    background: rgba(255,107,43,0.08);
+  }
+
+  /* ─── SECTION ─── */
+  .section { padding: 80px 40px; }
+  .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px; font-weight: 700; letter-spacing: 0.5px;
+  }
+  .section-title .tag {
+    display: inline-block; background: rgba(255,107,43,0.15);
+    color: var(--orange); font-size: 13px; font-weight: 500;
+    padding: 3px 10px; border-radius: 4px; margin-right: 10px;
+    font-family: 'Inter', sans-serif; vertical-align: middle;
+    letter-spacing: 0; text-transform: uppercase;
+  }
+  .see-all { color: var(--orange); font-size: 13px; font-weight: 500; text-decoration: none; cursor: pointer; }
+  .see-all:hover { text-decoration: underline; }
+
+  /* ─── EVENT CARDS ─── */
+  .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+  .event-card {
+    background: var(--navy);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; overflow: hidden;
+    cursor: pointer; transition: all 0.3s;
+    position: relative;
+  }
+  .event-card:hover { transform: translateY(-4px); border-color: rgba(255,107,43,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .event-card.sponsored::after {
+    content: '⚡ SPONSORED';
+    position: absolute; top: 12px; right: 12px;
+    background: var(--gold); color: #000;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .card-img {
+    height: 180px; position: relative; overflow: hidden;
+  }
+  .card-img-bg {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .event-card:hover .card-img-bg { transform: scale(1.04); }
+  .card-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(26,39,68,0.9));
+  }
+  .card-date-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(10,15,30,0.9); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px; padding: 6px 10px; text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .badge-day { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; line-height: 1; color: var(--orange); }
+  .badge-month { font-size: 11px; color: var(--subtext); text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-body { padding: 20px; }
+  .card-cat {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--orange); margin-bottom: 8px;
+  }
+  .card-title { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 600; line-height: 1.3; margin-bottom: 10px; }
+  .card-meta { display: flex; gap: 16px; font-size: 12px; color: var(--subtext); }
+  .card-meta span { display: flex; align-items: center; gap: 5px; }
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .card-price { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; color: var(--mist); }
+  .card-price small { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--subtext); font-weight: 400; }
+  .btn-book {
+    background: rgba(255,107,43,0.15); border: 1px solid rgba(255,107,43,0.3);
+    color: var(--orange); padding: 8px 18px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.2s;
+  }
+  .btn-book:hover { background: var(--orange); color: #fff; }
+
+  /* ─── FEATURED STRIP ─── */
+  .featured-strip {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; align-items: start;
+  }
+  .featured-main {
+    grid-row: span 2;
+    border-radius: 20px; overflow: hidden; position: relative;
+    height: 480px; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s;
+  }
+  .featured-main:hover { border-color: rgba(255,107,43,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .featured-main-bg {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1a2744 0%, #0d1829 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 80px;
+    position: relative; overflow: hidden;
+  }
+  .featured-main-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(255,107,43,0.15), transparent 70%);
+  }
+  .featured-main-text {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 32px;
+    background: linear-gradient(to top, rgba(10,15,30,0.95) 0%, transparent 100%);
+  }
+  .featured-live-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #e53935; color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    padding: 4px 10px; border-radius: 4px; margin-bottom: 12px;
+  }
+  .featured-cat { font-size: 12px; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .featured-title { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
+  .featured-detail { font-size: 13px; color: var(--subtext); margin-bottom: 20px; }
+
+  .side-card {
+    background: var(--navy); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px; overflow: hidden; cursor: pointer; transition: all 0.3s;
+    display: flex; align-items: center; gap: 16px; padding: 16px;
+  }
+  .side-card:hover { border-color: rgba(255,107,43,0.3); transform: translateX(4px); }
+  .side-card-icon {
+    width: 56px; height: 56px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .side-card-info { flex: 1; min-width: 0; }
+  .side-card-cat { font-size: 11px; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .side-card-title { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .side-card-meta { font-size: 12px; color: var(--subtext); }
+
+  /* ─── CATEGORY GRID ─── */
+  .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .cat-card {
+    background: var(--navy); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 28px 20px; cursor: pointer;
+    transition: all 0.25s; text-align: center; position: relative; overflow: hidden;
+  }
+  .cat-card::before {
+    content: ''; position: absolute;
+    inset: 0; opacity: 0; transition: opacity 0.3s;
+  }
+  .cat-card:hover { transform: translateY(-3px); }
+  .cat-card:hover::before { opacity: 1; }
+  .cat-card.music::before { background: radial-gradient(ellipse at 50% 100%, rgba(255,107,43,0.15), transparent 60%); }
+  .cat-card.sports::before { background: radial-gradient(ellipse at 50% 100%, rgba(34,197,94,0.15), transparent 60%); }
+  .cat-card.nightlife::before { background: radial-gradient(ellipse at 50% 100%, rgba(168,85,247,0.15), transparent 60%); }
+  .cat-card.culture::before { background: radial-gradient(ellipse at 50% 100%, rgba(255,215,0,0.15), transparent 60%); }
+  .cat-card.food::before { background: radial-gradient(ellipse at 50% 100%, rgba(239,68,68,0.15), transparent 60%); }
+  .cat-card.business::before { background: radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.15), transparent 60%); }
+  .cat-card.family::before { background: radial-gradient(ellipse at 50% 100%, rgba(20,184,166,0.15), transparent 60%); }
+  .cat-card.tech::before { background: radial-gradient(ellipse at 50% 100%, rgba(99,102,241,0.15), transparent 60%); }
+  .cat-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+  .cat-name { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .cat-count { font-size: 12px; color: var(--subtext); }
+
+  /* ─── BUSINESS SECTION ─── */
+  .biz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .biz-card {
+    background: var(--navy); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; padding: 24px; cursor: pointer;
+    transition: all 0.25s; display: flex; align-items: center; gap: 16px;
+  }
+  .biz-card:hover { border-color: rgba(255,107,43,0.3); transform: translateY(-2px); }
+  .biz-card.premium { border-color: rgba(255,215,0,0.25); background: linear-gradient(135deg, var(--navy) 0%, rgba(255,215,0,0.03) 100%); }
+  .biz-logo {
+    width: 56px; height: 56px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .biz-logo.bg-orange { background: rgba(255,107,43,0.15); }
+  .biz-logo.bg-gold { background: rgba(255,215,0,0.1); }
+  .biz-logo.bg-purple { background: rgba(168,85,247,0.15); }
+  .biz-logo.bg-green { background: rgba(34,197,94,0.15); }
+  .biz-info { flex: 1; min-width: 0; }
+  .biz-name { font-family: 'Oswald', sans-serif; font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .biz-meta { font-size: 12px; color: var(--subtext); margin-bottom: 8px; }
+  .premium-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3);
+    color: var(--gold); font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;
+  }
+
+  /* ─── MAP SECTION ─── */
+  .map-section {
+    padding: 80px 40px;
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .map-layout { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+  .map-embed {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08); height: 440px;
+    background: var(--dim); display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .map-placeholder { text-align: center; color: var(--subtext); }
+  .map-placeholder .map-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+  .map-placeholder p { font-size: 14px; margin-bottom: 20px; }
+  .map-side-list { display: flex; flex-direction: column; gap: 12px; }
+  .map-event-item {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .map-event-item:hover { border-color: rgba(255,107,43,0.3); background: rgba(255,107,43,0.04); }
+  .map-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .map-event-info { flex: 1; min-width: 0; }
+  .map-event-name { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+  .map-event-loc { font-size: 12px; color: var(--subtext); }
+  .map-event-time { font-size: 12px; color: var(--orange); margin-top: 4px; font-weight: 500; }
+
+  /* ─── DIGEST CTA ─── */
+  .digest-cta {
+    margin: 0 40px 80px;
+    background: linear-gradient(135deg, var(--navy) 0%, rgba(255,107,43,0.08) 100%);
+    border: 1px solid rgba(255,107,43,0.2);
+    border-radius: 24px; padding: 60px 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 40px;
+    position: relative; overflow: hidden;
+  }
+  .digest-cta::after {
+    content: '📲';
+    position: absolute; right: 200px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 120px; opacity: 0.06;
+  }
+  .digest-eyebrow { font-size: 12px; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; font-weight: 600; }
+  .digest-title { font-family: 'Oswald', sans-serif; font-size: 36px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+  .digest-sub { font-size: 15px; color: var(--subtext); line-height: 1.6; max-width: 460px; }
+  .digest-form { display: flex; gap: 12px; flex-shrink: 0; }
+  .digest-input {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px; padding: 13px 20px; color: var(--mist);
+    font-size: 14px; font-family: 'Inter', sans-serif;
+    width: 240px; outline: none;
+  }
+  .digest-input:focus { border-color: var(--orange); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 60px 40px 32px;
+  }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+  .footer-brand p { color: var(--subtext); font-size: 14px; line-height: 1.7; margin-top: 12px; max-width: 280px; }
+  .footer-col h4 { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--mist); margin-bottom: 16px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { color: var(--subtext); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 13px; color: var(--subtext); }
+  .payment-icons { display: flex; gap: 10px; align-items: center; }
+  .pay-badge { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 4px 12px; font-size: 12px; font-weight: 600; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--navy); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px; max-width: 640px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    transform: translateY(20px); transition: transform 0.3s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-hero { height: 220px; background: linear-gradient(135deg, #1a2744, #0d1829); display: flex; align-items: center; justify-content: center; font-size: 64px; border-radius: 24px 24px 0 0; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.5); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .modal-body { padding: 32px; }
+  .modal-cat { font-size: 12px; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .modal-title { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+  .modal-meta-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .modal-meta-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--subtext); }
+  .modal-meta-item strong { color: var(--mist); }
+  .modal-desc { font-size: 15px; color: var(--subtext); line-height: 1.8; margin-bottom: 32px; }
+  .modal-map { background: var(--dim); border-radius: 12px; height: 160px; display: flex; align-items: center; justify-content: center; color: var(--subtext); margin-bottom: 32px; border: 1px solid rgba(255,255,255,0.06); font-size: 14px; }
+  .modal-price-row { display: flex; align-items: center; justify-content: space-between; }
+  .modal-price { font-family: 'Oswald', sans-serif; font-size: 36px; font-weight: 700; }
+  .modal-price small { font-family: 'Inter', sans-serif; font-size: 14px; color: var(--subtext); font-weight: 400; }
+  .btn-pay { background: var(--orange); color: #fff; border: none; padding: 14px 36px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+  .btn-pay:hover { background: #e85a1f; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,107,43,0.4); }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed; bottom: 32px; right: 32px; z-index: 300;
+    background: var(--navy); border: 1px solid rgba(255,107,43,0.4);
+    border-radius: 12px; padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; font-weight: 500;
+    transform: translateY(100px); opacity: 0; transition: all 0.4s;
+    max-width: 320px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 20px; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 90px 20px 50px; }
+    .hero h1 { font-size: 52px; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+    .filter-section { padding: 0 20px; }
+    .section { padding: 60px 20px; }
+    .featured-strip { grid-template-columns: 1fr; }
+    .featured-main { height: 320px; grid-row: auto; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    .map-layout { grid-template-columns: 1fr; }
+    .digest-cta { margin: 0 20px 60px; flex-direction: column; padding: 40px 28px; }
+    .digest-form { flex-direction: column; width: 100%; }
+    .digest-input { width: 100%; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .map-section { padding: 60px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Dar<span>Events</span></div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="filterCat('all')">Matukio</a></li>
+    <li><a href="#biz">Biashara</a></li>
+    <li><a href="#map">Ramani</a></li>
+    <li><a href="#" onclick="showDigest()">Digest</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost" onclick="showToast('🔐', 'Fungua akaunti yako!')">Ingia</button>
+    <button class="btn-primary" onclick="openPostModal()" style="display:flex;align-items:center;gap:6px;font-weight:700">
+      <span style="font-size:18px;line-height:1">＋</span> Weka Tukio
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="city-grid"></div>
+  <div class="hero-eyebrow">
+    <span class="pulse-dot"></span>
+    Matukio yanaendelea sasa • Dar es Salaam
+  </div>
+  <h1>Jiji <span class="accent">Halisi</span><br>Halisinzi.<br><span class="gold">Lacheza.</span></h1>
+  <p class="hero-sub">Pata matukio ya muziki, michezo, burudani ya usiku, warsha, na zaidi — yote Dar es Salaam na miji ya Tanzania.</p>
+  <div class="hero-actions">
+    <button class="btn-lg btn-orange" onclick="scrollToEvents()">🔍 Tafuta Matukio</button>
+    <button class="btn-lg btn-outline" onclick="openPostModal()" style="border-color:var(--orange);color:var(--orange)">＋ Tangaza Tukio Lako</button>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">1<span>,</span>240<span>+</span></div>
+      <div class="stat-label">Matukio Hai</div>
+    </div>
+    <div>
+      <div class="stat-num">340<span>+</span></div>
+      <div class="stat-label">Biashara Zilizosajiliwa</div>
+    </div>
+    <div>
+      <div class="stat-num">98<span>K</span></div>
+      <div class="stat-label">Watumiaji</div>
+    </div>
+    <div>
+      <div class="stat-num">8</div>
+      <div class="stat-label">Miji Tanzania</div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-section" id="events-top">
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Tafuta tukio, mahali, au msanii..." oninput="filterSearch(this.value)">
+    </div>
+    <button class="filter-chip active" onclick="setChip(this,'all')">Yote</button>
+    <button class="filter-chip" onclick="setChip(this,'Muziki')">🎵 Muziki</button>
+    <button class="filter-chip" onclick="setChip(this,'Michezo')">⚽ Michezo</button>
+    <button class="filter-chip" onclick="setChip(this,'Usiku')">🌃 Usiku</button>
+    <button class="filter-chip" onclick="setChip(this,'Chakula')">🍽️ Chakula</button>
+    <button class="filter-chip" onclick="setChip(this,'Warsha')">🛠️ Warsha</button>
+    <button class="filter-chip" onclick="setChip(this,'Familia')">👨‍👩‍👧 Familia</button>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title"><span class="tag">🔥 Moto</span> Matukio Makubwa</div>
+  </div>
+  <div class="featured-strip">
+    <div class="featured-main" onclick="openModal(events[0])">
+      <div class="featured-main-bg">🎸</div>
+      <div class="card-img-overlay"></div>
+      <div class="featured-main-text">
+        <div class="featured-live-badge"><span style="width:8px;height:8px;background:#fff;border-radius:50%;display:inline-block;"></span> USIKU HUU</div>
+        <div class="featured-cat">Muziki wa Live</div>
+        <div class="featured-title">Kariakoo Groove Night — Vol. XIV</div>
+        <div class="featured-detail">📍 Mlimani City Arena &nbsp;·&nbsp; Ijumaa Ag. 29, 20:00 &nbsp;·&nbsp; TZS 15,000</div>
+        <button class="btn-primary">Nunua Tiketi →</button>
+      </div>
+    </div>
+    <div class="side-card" onclick="openModal(events[1])">
+      <div class="side-card-icon" style="background:rgba(34,197,94,0.12)">⚽</div>
+      <div class="side-card-info">
+        <div class="side-card-cat">Michezo</div>
+        <div class="side-card-title">Simba vs Yanga — Derby</div>
+        <div class="side-card-meta">📍 Benjamin Mkapa Stadium &nbsp;·&nbsp; Jumamosi 30 Aug</div>
+      </div>
+    </div>
+    <div class="side-card" onclick="openModal(events[2])">
+      <div class="side-card-icon" style="background:rgba(168,85,247,0.12)">🌃</div>
+      <div class="side-card-info">
+        <div class="side-card-cat">Usiku wa Burudani</div>
+        <div class="side-card-title">Sunset Rooftop — Coco Beach</div>
+        <div class="side-card-meta">📍 Coco Beach Hotel &nbsp;·&nbsp; Kila Ijumaa, 18:00</div>
+      </div>
+    </div>
+    <div class="side-card" onclick="openModal(events[3])">
+      <div class="side-card-icon" style="background:rgba(255,215,0,0.1)">🍳</div>
+      <div class="side-card-info">
+        <div class="side-card-cat">Chakula & Kinywaji</div>
+        <div class="side-card-title">Dar Food Festival 2026</div>
+        <div class="side-card-meta">📍 Mnazi Mmoja Grounds &nbsp;·&nbsp; Ijumaa-Jumapili</div>
+      </div>
+    </div>
+    <div class="side-card" onclick="openModal(events[4])">
+      <div class="side-card-icon" style="background:rgba(59,130,246,0.12)">💻</div>
+      <div class="side-card-info">
+        <div class="side-card-cat">Teknolojia</div>
+        <div class="side-card-title">TechDar Bootcamp — AI & Web</div>
+        <div class="side-card-meta">📍 UDSM Innovation Hub &nbsp;·&nbsp; Sept 5–7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS GRID -->
+<section class="section" style="padding-top: 0;" id="events-grid">
+  <div class="section-header">
+    <div class="section-title">Matukio Yote</div>
+    <span class="see-all">Ona yote →</span>
+  </div>
+  <div class="events-grid" id="eventsGrid"></div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section" style="background: rgba(255,255,255,0.01); border-top: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04);">
+  <div class="section-header">
+    <div class="section-title">Aina za Matukio</div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card music" onclick="filterCat('Muziki')"><span class="cat-icon">🎵</span><div class="cat-name">Muziki</div><div class="cat-count">142 matukio</div></div>
+    <div class="cat-card sports" onclick="filterCat('Michezo')"><span class="cat-icon">⚽</span><div class="cat-name">Michezo</div><div class="cat-count">87 matukio</div></div>
+    <div class="cat-card nightlife" onclick="filterCat('Usiku')"><span class="cat-icon">🌃</span><div class="cat-name">Usiku</div><div class="cat-count">230 matukio</div></div>
+    <div class="cat-card culture" onclick="filterCat('Sanaa')"><span class="cat-icon">🎨</span><div class="cat-name">Sanaa & Utamaduni</div><div class="cat-count">56 matukio</div></div>
+    <div class="cat-card food" onclick="filterCat('Chakula')"><span class="cat-icon">🍽️</span><div class="cat-name">Chakula</div><div class="cat-count">93 matukio</div></div>
+    <div class="cat-card business" onclick="filterCat('Warsha')"><span class="cat-icon">🛠️</span><div class="cat-name">Warsha</div><div class="cat-count">41 matukio</div></div>
+    <div class="cat-card family" onclick="filterCat('Familia')"><span class="cat-icon">👨‍👩‍👧</span><div class="cat-name">Familia</div><div class="cat-count">68 matukio</div></div>
+    <div class="cat-card tech" onclick="filterCat('Teknolojia')"><span class="cat-icon">💻</span><div class="cat-name">Teknolojia</div><div class="cat-count">29 matukio</div></div>
+  </div>
+</section>
+
+<!-- MAP SECTION -->
+<div class="map-section" id="map">
+  <div class="section-header">
+    <div class="section-title">🗺️ Ramani ya Matukio</div>
+    <span class="see-all">Fungua ramani kamili →</span>
+  </div>
+  <div class="map-layout">
+    <div class="map-embed">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253815.57413023266!2d39.17666419999999!3d-6.792354!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4bae169bd6f1%3A0x940f6b26a086a1dd!2sDar%20es%20Salaam!5e0!3m2!1ssw!2stz!4v1692000000000!5m2!1ssw!2stz"
+        width="100%" height="100%" style="border:0; border-radius:16px; filter: invert(90%) hue-rotate(180deg) saturate(0.8);"
+        allowfullscreen="" loading="lazy">
+      </iframe>
+    </div>
+    <div class="map-side-list">
+      <div style="font-family:'Oswald',sans-serif; font-size:18px; font-weight:600; margin-bottom:16px;">Matukio Karibu Nawe</div>
+      <div class="map-event-item" onclick="openModal(events[0])">
+        <span class="map-dot" style="background:#FF6B2B"></span>
+        <div class="map-event-info">
+          <div class="map-event-name">Kariakoo Groove Night</div>
+          <div class="map-event-loc">📍 Mlimani City Arena</div>
+          <div class="map-event-time">Leo Usiku, 20:00 • 2.3 km</div>
+        </div>
+      </div>
+      <div class="map-event-item" onclick="openModal(events[2])">
+        <span class="map-dot" style="background:#A855F7"></span>
+        <div class="map-event-info">
+          <div class="map-event-name">Sunset Rooftop</div>
+          <div class="map-event-loc">📍 Coco Beach Hotel</div>
+          <div class="map-event-time">Leo, 18:00 • 4.1 km</div>
+        </div>
+      </div>
+      <div class="map-event-item" onclick="openModal(events[3])">
+        <span class="map-dot" style="background:#FFD700"></span>
+        <div class="map-event-info">
+          <div class="map-event-name">Dar Food Festival</div>
+          <div class="map-event-loc">📍 Mnazi Mmoja Grounds</div>
+          <div class="map-event-time">Ijumaa–Jumapili • 1.8 km</div>
+        </div>
+      </div>
+      <div class="map-event-item" onclick="openModal(events[1])">
+        <span class="map-dot" style="background:#22C55E"></span>
+        <div class="map-event-info">
+          <div class="map-event-name">Simba vs Yanga Derby</div>
+          <div class="map-event-loc">📍 Benjamin Mkapa Stadium</div>
+          <div class="map-event-time">Jumamosi, 15:00 • 5.6 km</div>
+        </div>
+      </div>
+      <div class="map-event-item" onclick="openModal(events[5])">
+        <span class="map-dot" style="background:#3B82F6"></span>
+        <div class="map-event-info">
+          <div class="map-event-name">Bongo Flava Live</div>
+          <div class="map-event-loc">📍 Uhuru Gardens</div>
+          <div class="map-event-time">Jumapili, 17:00 • 3.0 km</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUSINESSES -->
+<section class="section" id="biz">
+  <div class="section-header">
+    <div class="section-title"><span class="tag">⭐ Premium</span> Biashara Zinazoshiriki</div>
+    <span class="see-all" onclick="showToast('🏢','Orodha kamili ya biashara inaongezwa...')">Ona zote →</span>
+  </div>
+  <div class="biz-grid">
+    <div class="biz-card premium">
+      <div class="biz-logo bg-gold">🏨</div>
+      <div class="biz-info">
+        <div class="biz-name">Kempinski Kilimanjaro</div>
+        <div class="biz-meta">🏨 Hoteli ya Kifahari • CBD</div>
+        <span class="premium-badge">⭐ PREMIUM</span>
+      </div>
+    </div>
+    <div class="biz-card premium">
+      <div class="biz-logo bg-orange">🍕</div>
+      <div class="biz-info">
+        <div class="biz-name">Addis in Dar</div>
+        <div class="biz-meta">🍽️ Mkahawa • Masaki</div>
+        <span class="premium-badge">⭐ PREMIUM</span>
+      </div>
+    </div>
+    <div class="biz-card">
+      <div class="biz-logo bg-purple">🎭</div>
+      <div class="biz-info">
+        <div class="biz-name">Alliance Française</div>
+        <div class="biz-meta">🎨 Utamaduni • Upanga</div>
+        <div style="font-size:11px;color:var(--subtext);margin-top:6px">Akaunti ya Msingi</div>
+      </div>
+    </div>
+    <div class="biz-card">
+      <div class="biz-logo bg-green">🏋️</div>
+      <div class="biz-info">
+        <div class="biz-name">Gymkhana Club</div>
+        <div class="biz-meta">⚽ Michezo & Burudani • Gymkhana Rd</div>
+        <div style="font-size:11px;color:var(--subtext);margin-top:6px">Akaunti ya Msingi</div>
+      </div>
+    </div>
+    <div class="biz-card premium">
+      <div class="biz-logo bg-orange">🎤</div>
+      <div class="biz-info">
+        <div class="biz-name">WCB Wasafi Media</div>
+        <div class="biz-meta">🎵 Muziki & Burudani • Kinondoni</div>
+        <span class="premium-badge">⭐ PREMIUM</span>
+      </div>
+    </div>
+    <div class="biz-card">
+      <div class="biz-logo" style="background:rgba(239,68,68,0.12)">🎬</div>
+      <div class="biz-info">
+        <div class="biz-name">Mlimani City Cinemas</div>
+        <div class="biz-meta">🎬 Sinema • Ubungo</div>
+        <div style="font-size:11px;color:var(--subtext);margin-top:6px">Akaunti ya Msingi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIGEST CTA -->
+<div class="digest-cta" id="digest-section">
+  <div>
+    <div class="digest-eyebrow">📬 Kila Ijumaa Asubuhi</div>
+    <div class="digest-title">This Weekend<br>in Dar es Salaam</div>
+    <p class="digest-sub">Pata orodha ya matukio bora ya wikendi moja kwa moja kwenye simu yako — muziki, chakula, michezo, na burudani yote pamoja.</p>
+  </div>
+  <div class="digest-form">
+    <input type="tel" class="digest-input" id="digestPhone" placeholder="Namba ya simu (+255...)">
+    <button class="btn-primary btn-lg" onclick="subscribeDigest()">Jiandikishe Bure 🚀</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Dar<span style="color:var(--orange)">Events</span></div>
+      <p>Jukwaa nambari moja la matukio Tanzania. Tunawezesha biashara na wasimamizi wa matukio kufikia hadhira kubwa zaidi.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Jukwaa</h4>
+      <ul class="footer-links">
+        <li><a href="#">Matukio</a></li>
+        <li><a href="#">Biashara</a></li>
+        <li><a href="#">Ramani</a></li>
+        <li><a href="#">Weka Tukio</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Msaada</h4>
+      <ul class="footer-links">
+        <li><a href="#">Jinsi ya Kulipa</a></li>
+        <li><a href="#">Maswali ya Kawaida</a></li>
+        <li><a href="#">Wasiliana Nasi</a></li>
+        <li><a href="#">Biashara ya Matangazo</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kampuni</h4>
+      <ul class="footer-links">
+        <li><a href="#">Kuhusu Sisi</a></li>
+        <li><a href="#">Kazi</a></li>
+        <li><a href="#">Wachangiaji</a></li>
+        <li><a href="#">Faragha</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 DarEvents. Haki zote zimehifadhiwa. 🇹🇿</span>
+    <div class="payment-icons">
+      <span style="font-size:12px;color:var(--subtext);margin-right:8px">Tunakubali:</span>
+      <span class="pay-badge" style="color:#00C853">M-Pesa</span>
+      <span class="pay-badge" style="color:#E91E63">Airtel</span>
+      <span class="pay-badge" style="color:#1976D2">Tigo</span>
+      <span class="pay-badge" style="color:#FF9800">Halopesa</span>
+    </div>
+  </div>
+</footer>
+
+<!-- POST EVENT MODAL -->
+<div class="modal-overlay" id="postModalOverlay" onclick="closePostModal(event)">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-body" style="padding:28px 28px 24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <div>
+          <div style="font-size:12px;color:var(--orange);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Bure kwa sasa</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:26px;font-weight:700">Tangaza Tukio Lako</div>
+        </div>
+        <button onclick="closePostModal()" style="background:rgba(255,255,255,0.08);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer">×</button>
+      </div>
+
+      <div style="display:grid;gap:14px">
+        <div>
+          <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Jina la Tukio *</label>
+          <input id="postTitle" type="text" placeholder="Mfano: Kariakoo Groove Night" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Tarehe *</label>
+            <input id="postDate" type="date" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none">
+          </div>
+          <div>
+            <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Saa</label>
+            <input id="postTime" type="text" placeholder="20:00" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none">
+          </div>
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Mahali *</label>
+          <input id="postLoc" type="text" placeholder="Mlimani City Arena, Ubungo" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Kategoria</label>
+            <select id="postCat" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none">
+              <option>Muziki</option><option>Michezo</option><option>Usiku</option><option>Chakula</option>
+              <option>Warsha</option><option>Familia</option><option>Teknolojia</option><option>Sanaa</option><option>Biashara</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Bei ya Tiketi</label>
+            <input id="postPrice" type="text" placeholder="TZS 15,000 au Bure" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none">
+          </div>
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Maelezo mafupi</label>
+          <textarea id="postDesc" rows="3" placeholder="Eleza tukio lako kwa sentensi 1-2..." style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none;resize:vertical"></textarea>
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:8px">Muda wa kuonekana online (demo)</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <label class="duration-opt" style="flex:1;min-width:90px;text-align:center;padding:12px 8px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;cursor:pointer;background:rgba(255,107,43,0.1);border-color:var(--orange)">
+              <input type="radio" name="duration" value="2" checked style="display:none">
+              <div style="font-weight:700;font-size:15px">Siku 2</div>
+              <div style="font-size:11px;color:var(--gold);margin-top:2px">$1 (demo)</div>
+            </label>
+            <label class="duration-opt" style="flex:1;min-width:90px;text-align:center;padding:12px 8px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;cursor:pointer">
+              <input type="radio" name="duration" value="7" style="display:none">
+              <div style="font-weight:700;font-size:15px">Siku 7</div>
+              <div style="font-size:11px;color:var(--subtext);margin-top:2px">$3 (demo)</div>
+            </label>
+            <label class="duration-opt" style="flex:1;min-width:90px;text-align:center;padding:12px 8px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;cursor:pointer">
+              <input type="radio" name="duration" value="30" style="display:none">
+              <div style="font-weight:700;font-size:15px">Siku 30</div>
+              <div style="font-size:11px;color:var(--subtext);margin-top:2px">$8 (demo)</div>
+            </label>
+          </div>
+          <p style="font-size:11px;color:var(--subtext);margin-top:8px">💡 Kwa sasa yote <strong style="color:var(--mist)">bure</strong>. Malipo yataanzishwa baadaye.</p>
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--subtext);display:block;margin-bottom:6px">Namba ya simu (M-Pesa / WhatsApp)</label>
+          <input id="postPhone" type="tel" placeholder="+255 7XX XXX XXX" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;color:var(--mist);font-size:14px;font-family:Inter,sans-serif;outline:none">
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="submitPostEvent()" style="width:100%;margin-top:22px;padding:14px;font-size:15px;font-weight:700">
+        Chapisha Tukio Bure →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hero" id="modalHero">🎉</div>
+    <div class="modal-body">
+      <div class="modal-cat" id="modalCat">Kategoria</div>
+      <div class="modal-title" id="modalTitle">Jina la Tukio</div>
+      <div class="modal-meta-row">
+        <div class="modal-meta-item">📅 <strong id="modalDate">Tarehe</strong></div>
+        <div class="modal-meta-item">🕗 <strong id="modalTime">Saa</strong></div>
+        <div class="modal-meta-item">📍 <strong id="modalLoc">Mahali</strong></div>
+      </div>
+      <p class="modal-desc" id="modalDesc">Maelezo ya tukio.</p>
+      <div class="modal-map">🗺️ &nbsp; Ramani ya <span id="modalMapLoc">mahali</span> — Google Maps ingeonyeshwa hapa</div>
+      <div class="modal-price-row">
+        <div>
+          <div style="font-size:12px;color:var(--subtext);margin-bottom:4px">Bei ya Tiketi</div>
+          <div class="modal-price" id="modalPrice">TZS 0 <small>/ mtu</small></div>
+        </div>
+        <button class="btn-pay" onclick="buyTicket()">💳 Lipia na M-Pesa →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">Ujumbe wa mfumo</span>
+</div>
+
+<script>
+// ─── DarEvents Dynamic Frontend ───────────────────────────────────
+// Sponsored events ALWAYS appear first (server + client sort)
+
+const API_BASE = window.location.origin; // same origin when served by FastAPI
+let events = [];
+let currentFilter = 'all';
+let currentSearch = '';
+
+async function loadEvents() {
+  try {
+    const res = await fetch(`${API_BASE}/api/events?limit=100`);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    events = data.events || [];
+    // Client-side safety: sponsored first
+    events.sort((a, b) => (b.sponsored === true) - (a.sponsored === true));
+    renderEvents();
+    updateFeatured();
+    updateMapList();
+    updateStats(data.total);
+  } catch (err) {
+    console.warn('API not ready, using fallback seed', err);
+    // Fallback so site never breaks
+    events = [
+      { id:'demo1', emoji:'🎸', cat:'Muziki wa Live', title:'Kariakoo Groove Night — Vol. XIV', date:'Ijumaa, Ag. 29', time:'20:00', loc:'Mlimani City Arena', price:'TZS 15,000', sponsored:false, desc:'Usiku mkubwa wa muziki wa bendi za live.' },
+      { id:'demo2', emoji:'⚽', cat:'Michezo', title:'Simba SC vs Yanga SC — Dar Derby', date:'Jumamosi, Ag. 30', time:'15:00', loc:'Benjamin Mkapa Stadium', price:'TZS 5,000', sponsored:true, desc:'Mechi ya nguvu kati ya Simba na Yanga.' },
+      { id:'demo3', emoji:'🌅', cat:'Usiku wa Burudani', title:'Sunset Rooftop — Coco Beach', date:'Kila Ijumaa', time:'18:00–22:00', loc:'Coco Beach Hotel Rooftop', price:'TZS 10,000', sponsored:false, desc:'Rooftop na mandhari ya bahari.' },
+      { id:'demo4', emoji:'🍳', cat:'Chakula & Kinywaji', title:'Dar Food Festival 2026', date:'Ag. 29 – 31', time:'10:00–22:00', loc:'Mnazi Mmoja Grounds', price:'Bure', sponsored:true, desc:'Tamasha la vyakula vya Tanzania.' },
+      { id:'demo5', emoji:'💻', cat:'Teknolojia', title:'TechDar Bootcamp — AI & Web Dev', date:'Sept 5–7, 2026', time:'09:00–17:00', loc:'UDSM Innovation Hub', price:'TZS 50,000', sponsored:false, desc:'Kozi ya AI na web development.' },
+      { id:'demo6', emoji:'🎤', cat:'Muziki', title:'Bongo Flava Live — Uhuru Gardens', date:'Jumapili, Ag. 31', time:'17:00', loc:'Uhuru Gardens, Kivukoni', price:'TZS 8,000', sponsored:false, desc:'Wasanii wa Bongo Flava.' },
+      { id:'demo7', emoji:'🏃', cat:'Michezo', title:'Dar es Salaam Marathon 2026', date:'Sept 13, 2026', time:'06:00', loc:'Uhuru Monument — Kariakoo', price:'TZS 20,000', sponsored:true, desc:'Mbio za 42km.' },
+      { id:'demo8', emoji:'🎨', cat:'Sanaa & Utamaduni', title:'Bagamoyo Arts Festival', date:'Sept 19–21', time:'Siku Nzima', loc:'Bagamoyo Town Centre', price:'TZS 3,000', sponsored:false, desc:'Sanaa za jadi na kisasa.' },
+    ];
+    events.sort((a, b) => (b.sponsored === true) - (a.sponsored === true));
+    renderEvents();
+    updateFeatured();
+    updateMapList();
+  }
+}
+
+function updateStats(total) {
+  // optional: update hero numbers if element exists
+}
+
+function renderEvents() {
+  const grid = document.getElementById('eventsGrid');
+  if (!grid) return;
+  const filtered = events.filter(e => {
+    const matchCat = currentFilter === 'all' || (e.cat || '').toLowerCase().includes(currentFilter.toLowerCase());
+    const matchSearch = !currentSearch ||
+      (e.title || '').toLowerCase().includes(currentSearch.toLowerCase()) ||
+      (e.loc || '').toLowerCase().includes(currentSearch.toLowerCase());
+    return matchCat && matchSearch;
+  });
+  // Sponsored first, then by likes (trending boost)
+  filtered.sort((a, b) => {
+    if (a.sponsored !== b.sponsored) return (b.sponsored === true) - (a.sponsored === true);
+    return (b.likes || 0) - (a.likes || 0);
+  });
+
+  grid.innerHTML = filtered.map(e => {
+    const day = (e.date || '').split(' ')[1] || (e.date_iso || '').slice(-2) || '–';
+    const month = (e.date || '').split(' ')[2] || (e.date_iso || '').slice(5,7) || '';
+    const imgStyle = e.image_url
+      ? `background-image:url('${e.image_url}');background-size:cover;background-position:center;`
+      : `background:linear-gradient(135deg,#1a2744,#0d1829);display:flex;align-items:center;justify-content:center;font-size:64px;`;
+    const imgContent = e.image_url ? '' : (e.emoji || '🎉');
+    return `
+    <div class="event-card${e.sponsored ? ' sponsored' : ''}">
+      <div class="card-img" onclick='openModal(${JSON.stringify(e).replace(/'/g, "&#39;")})'>
+        <div class="card-img-bg" style="${imgStyle}">${imgContent}</div>
+        <div class="card-img-overlay"></div>
+        <div class="card-date-badge">
+          <div class="badge-day">${day}</div>
+          <div class="badge-month">${month}</div>
+        </div>
+      </div>
+      <div class="card-body" onclick='openModal(${JSON.stringify(e).replace(/'/g, "&#39;")})'>
+        <div class="card-cat">${e.cat || ''}</div>
+        <div class="card-title">${e.title || ''}</div>
+        <div class="card-meta">
+          <span>📍 ${e.loc || ''}</span>
+          <span>🕗 ${e.time || ''}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button onclick="event.stopPropagation();vote('${e.id}','like')" style="background:none;border:none;color:var(--subtext);cursor:pointer;font-size:13px;display:flex;align-items:center;gap:3px" title="Like">
+            👍 <span id="likes-${e.id}">${e.likes || 0}</span>
+          </button>
+          <button onclick="event.stopPropagation();vote('${e.id}','dislike')" style="background:none;border:none;color:var(--subtext);cursor:pointer;font-size:13px;display:flex;align-items:center;gap:3px" title="Dislike">
+            👎 <span id="dislikes-${e.id}">${e.dislikes || 0}</span>
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="card-price">${e.price || 'Bure'}</div>
+          <button class="btn-book" onclick='event.stopPropagation();openModal(${JSON.stringify(e).replace(/'/g, "&#39;")})'>Nunua →</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--subtext)"><div style="font-size:48px;margin-bottom:16px">🔍</div><div style="font-size:18px;font-weight:600;margin-bottom:8px">Hakuna matukio yaliyopatikana</div><div>Jaribu kutafuta kwa neno lingine</div></div>';
+  }
+}
+
+async function vote(id, type) {
+  // optimistic UI
+  const el = document.getElementById(type === 'like' ? `likes-${id}` : `dislikes-${id}`);
+  if (el) el.textContent = parseInt(el.textContent || 0) + 1;
+  const ev = events.find(e => e.id === id);
+  if (ev) {
+    if (type === 'like') ev.likes = (ev.likes || 0) + 1;
+    else ev.dislikes = (ev.dislikes || 0) + 1;
+  }
+  try {
+    await fetch(`${API_BASE}/api/events/${id}/vote?vote=${type}`, { method: 'POST' });
+  } catch (e) {}
+}
+
+function updateFeatured() {
+  // Featured section uses first few events (already sponsored-first)
+  // Keep static for now; can be made dynamic later
+}
+
+function updateMapList() {
+  // Optional: refresh side list with live data
+}
+
+function setChip(el, cat) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = cat;
+  renderEvents();
+}
+
+function filterCat(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.classList.toggle('active', c.textContent.toLowerCase().includes(cat.toLowerCase()) || (cat === 'all' && c.textContent === 'Yote'));
+  });
+  scrollToEvents();
+  renderEvents();
+}
+
+function filterSearch(val) {
+  currentSearch = val;
+  renderEvents();
+}
+
+function scrollToEvents() {
+  document.getElementById('events-top').scrollIntoView({ behavior: 'smooth' });
+}
+
+function openModal(ev) {
+  if (typeof ev === 'string') try { ev = JSON.parse(ev); } catch(e) {}
+  document.getElementById('modalHero').textContent = ev.emoji || '🎉';
+  document.getElementById('modalCat').textContent = ev.cat || '';
+  document.getElementById('modalTitle').textContent = ev.title || '';
+  document.getElementById('modalDate').textContent = ev.date || '';
+  document.getElementById('modalTime').textContent = ev.time || '';
+  document.getElementById('modalLoc').textContent = ev.loc || '';
+  document.getElementById('modalDesc').textContent = ev.desc || '';
+  document.getElementById('modalPrice').innerHTML = (ev.price || 'Bure') + ' <small>/ mtu</small>';
+  document.getElementById('modalMapLoc').textContent = ev.loc || '';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function buyTicket() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  showToast('💳', 'Unaitwa kwenye ukurasa wa M-Pesa wa kulipa tiketi!');
+}
+
+function showDigest() {
+  document.getElementById('digest-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function subscribeDigest() {
+  const phone = document.getElementById('digestPhone').value;
+  if (!phone) { showToast('⚠️', 'Tafadhali ingiza namba ya simu yako'); return; }
+  showToast('✅', 'Umefanikiwa! Utapata digest kila Ijumaa asubuhi 🎉');
+  document.getElementById('digestPhone').value = '';
+}
+
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ─── Post Event (free for now) ───────────────────────────────────
+function openPostModal() {
+  document.getElementById('postModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePostModal(e) {
+  if (!e || e.target === document.getElementById('postModalOverlay') || !e.target) {
+    document.getElementById('postModalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+// Duration selector visual
+document.querySelectorAll('.duration-opt').forEach(lab => {
+  lab.addEventListener('click', () => {
+    document.querySelectorAll('.duration-opt').forEach(l => {
+      l.style.background = 'none';
+      l.style.borderColor = 'rgba(255,255,255,0.12)';
+    });
+    lab.style.background = 'rgba(255,107,43,0.12)';
+    lab.style.borderColor = 'var(--orange)';
+    lab.querySelector('input').checked = true;
+  });
+});
+
+async function submitPostEvent() {
+  const title = document.getElementById('postTitle').value.trim();
+  const date = document.getElementById('postDate').value;
+  const time = document.getElementById('postTime').value.trim();
+  const loc = document.getElementById('postLoc').value.trim();
+  const cat = document.getElementById('postCat').value;
+  const price = document.getElementById('postPrice').value.trim() || 'Bure';
+  const desc = document.getElementById('postDesc').value.trim();
+  const phone = document.getElementById('postPhone').value.trim();
+  const duration = document.querySelector('input[name="duration"]:checked')?.value || '2';
+
+  if (!title || !date || !loc) {
+    showToast('⚠️', 'Tafadhali jaza jina, tarehe na mahali');
+    return;
+  }
+
+  const payload = {
+    title, date, time, loc, cat, price, desc, phone,
+    duration_days: parseInt(duration),
+    sponsored: false
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/events/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      showToast('✅', 'Tukio limetumwa! Litaonekana baada ya dakika chache 🎉');
+      closePostModal();
+      // clear form
+      ['postTitle','postDate','postTime','postLoc','postPrice','postDesc','postPhone'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+      });
+      setTimeout(loadEvents, 1500);
+      return;
+    }
+  } catch (err) {}
+
+  // Fallback: add locally so demo always works
+  const emojiMap = {Muziki:'🎵',Michezo:'⚽',Usiku:'🌃',Chakula:'🍽️',Warsha:'🛠️',Familia:'👨‍👩‍👧',Teknolojia:'💻',Sanaa:'🎨',Biashara:'💼'};
+  const newEv = {
+    id: 'user-' + Date.now(),
+    emoji: emojiMap[cat] || '🎉',
+    cat, title,
+    date: date,
+    date_iso: date,
+    time, loc, price,
+    sponsored: false,
+    desc: desc || 'Tukio lililotumwa na mtumiaji.',
+    city: 'Dar es Salaam'
+  };
+  events.unshift(newEv);
+  events.sort((a,b) => (b.sponsored===true)-(a.sponsored===true));
+  renderEvents();
+  showToast('✅', 'Tukio limetumwa (demo mode)! Litaonekana juu 🎉');
+  closePostModal();
+}
+
+// Boot
+loadEvents();
+// Refresh every 10 min
+setInterval(loadEvents, 10 * 60 * 1000);
+</script>
+</body>
+</html>
+
