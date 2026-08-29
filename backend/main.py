@@ -78,11 +78,13 @@ def get_events(
         lasts = [e.get("last_seen") for e in events if e.get("last_seen")]
         last = max(lasts) if lasts else None
 
-    return EventList(
-        events=[Event(**{k: v for k, v in e.items() if k in Event.model_fields}) for e in events[:limit]],
-        total=len(events),
-        last_updated=last,
-    )
+    safe = []
+    for e in events[:limit]:
+        try:
+            safe.append(Event(**{k: v for k, v in e.items() if k in Event.model_fields}))
+        except Exception:
+            continue
+    return EventList(events=safe, total=len(events), last_updated=last)
 
 @app.get("/api/events/{event_id}")
 def get_event(event_id: str):
@@ -227,7 +229,7 @@ def submit_user_event(payload: dict):
     return {"ok": True, "id": eid, "message": "Event published"}
 
 @app.post("/api/events/{event_id}/vote")
-def vote_event(event_id: str, vote: str = Query(..., regex="^(like|dislike)$")):
+def vote_event(event_id: str, vote: str = Query(..., pattern="^(like|dislike)$")):
     events = load_events()
     found = False
     for e in events:
