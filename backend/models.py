@@ -1,30 +1,40 @@
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional, List, Literal
+
 
 class Event(BaseModel):
-    id: str  # EVT-XXXXXXXX (8 hex chars)
+    """Event card schema — matches collector + frontend."""
+    id: str
+    emoji: str = "🎉"
+    cat: str = "Matukio"
     title: str
-    category: str
-    subcategory: Optional[str] = None
-    venue: Optional[str] = None
-    location: Optional[str] = None
-    address: Optional[str] = None
-    date: Optional[str] = None  # YYYY-MM-DD preferred
-    time: Optional[str] = None
-    price: Optional[str] = None
-    description: Optional[str] = None
-    source_url: Optional[str] = None
-    source_name: Optional[str] = None
-    image_url: Optional[str] = None
-    confidence: str = Field("low", regex="^(high|medium|low)$")
+    date: str = ""  # human readable e.g. "Ijumaa, Ag. 29"
+    date_iso: Optional[str] = None  # YYYY-MM-DD for sorting
+    time: str = ""
+    loc: str = ""
+    price: str = "Bure"
     sponsored: bool = False
-    created_at: Optional[str] = None
+    desc: str = ""
+    source_url: Optional[str] = None
+    image_url: Optional[str] = None
+    likes: int = 0
+    dislikes: int = 0
+    city: str = "Dar es Salaam"
     last_seen: Optional[str] = None
+    created_at: Optional[str] = None
+    ticket_url: Optional[str] = None
+    duration_days: Optional[int] = None
+    submitter_phone: Optional[str] = None
+    status: Optional[str] = "published"
+
+    model_config = {"extra": "ignore"}
+
 
 class EventList(BaseModel):
     events: List[Event]
     total: int
     last_updated: Optional[str] = None
+
 
 class CollectResult(BaseModel):
     added: int = 0
