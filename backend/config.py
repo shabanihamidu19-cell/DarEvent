@@ -10,33 +10,29 @@ def _env(name: str, default: str = "") -> str:
         return default
     return str(v).strip()
 
-# API Keys
+# API Keys (Groq + Tavily only)
 TAVILY_API_KEY = _env("TAVILY_API_KEY")
+GROQ_API_KEY = _env("GROQ_API_KEY")
 
-# AI provider priority: Groq → xAI → OpenAI
-_groq = _env("GROQ_API_KEY")
-_xai = _env("XAI_API_KEY")
-_openai = _env("OPENAI_API_KEY")
-
-if _groq:
-    OPENAI_API_KEY = _groq
+# Default: Groq is the only supported AI provider by default for this deployment.
+if GROQ_API_KEY:
+    # We map the Groq key into the variable names used elsewhere in the code so
+    # existing code that expects OPENAI_API_KEY / AI_BASE_URL works with Groq.
+    OPENAI_API_KEY = GROQ_API_KEY
     AI_BASE_URL = _env("AI_BASE_URL", "https://api.groq.com/openai/v1")
     AI_MODEL = _env("AI_MODEL", "llama-3.3-70b-versatile")
-elif _xai:
-    OPENAI_API_KEY = _xai
-    AI_BASE_URL = _env("AI_BASE_URL", "https://api.x.ai/v1")
-    AI_MODEL = _env("AI_MODEL", "grok-3-mini")
 else:
-    OPENAI_API_KEY = _openai
-    AI_BASE_URL = _env("AI_BASE_URL", "https://api.openai.com/v1")
-    AI_MODEL = _env("AI_MODEL", "gpt-4o-mini")
+    # No default fallback — require GROQ_API_KEY to be present.
+    OPENAI_API_KEY = ""
+    AI_BASE_URL = ""
+    AI_MODEL = ""
 
 # Paths
 DATA_DIR = _env("DATA_DIR", os.path.join(os.path.dirname(__file__), "..", "data"))
 EVENTS_FILE = os.path.join(DATA_DIR, "events.json")
 SPONSORED_FILE = os.path.join(DATA_DIR, "sponsored.json")
 
-# Collection settings
+# Collection settings (kept compact here; expand in future commits)
 CITIES = ["Dar es Salaam", "Arusha", "Mwanza", "Zanzibar", "Dodoma", "Mbeya"]
 SEARCH_QUERIES = [
     "upcoming events Dar es Salaam Tanzania this week next month",
@@ -47,5 +43,6 @@ SEARCH_QUERIES = [
     "live music nightlife Dar es Salaam this weekend",
 ]
 
-MAX_EVENTS = 300
-DAYS_AHEAD = 60
+MAX_EVENTS = int(_env("MAX_EVENTS", "300"))
+DAYS_AHEAD = int(_env("DAYS_AHEAD", "60"))
+MAX_RESULTS_PER_QUERY = int(_env("MAX_RESULTS_PER_QUERY", "5"))
