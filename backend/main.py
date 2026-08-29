@@ -14,7 +14,7 @@ from datetime import datetime
 import os
 import json
 
-from config import EVENTS_FILE, SPONSORED_FILE, DATA_DIR
+from config import EVENTS_FILE, SPONSORED_FILE, DATA_DIR, TAVILY_API_KEY, OPENAI_API_KEY, AI_BASE_URL, AI_MODEL
 from models import Event, EventList, CollectResult
 from collector import load_events, save_events, collect_once, seed_from_demo, load_sponsored_ids
 
@@ -32,7 +32,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve frontend
 FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 if os.path.isdir(FRONTEND_DIR):
     app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
@@ -53,7 +52,6 @@ def get_events(
     limit: int = Query(50, ge=1, le=200),
 ):
     events = load_events()
-    # Ensure likes/dislikes exist
     for e in events:
         e.setdefault("likes", 0)
         e.setdefault("dislikes", 0)
@@ -68,13 +66,11 @@ def get_events(
         events = [e for e in events if city.lower() in (e.get("city") or "").lower()]
 
     if sort == "trending":
-        # Score = likes - dislikes*0.5 + small boost for recent
         events.sort(key=lambda e: (
             not e.get("sponsored", False),
             -(e.get("likes", 0) - e.get("dislikes", 0) * 0.5)
         ))
     else:
-        # default: sponsored first, then date
         events.sort(key=lambda e: (not e.get("sponsored", False), e.get("date_iso") or "9999"))
 
     last = None
@@ -96,16 +92,52 @@ def get_event(event_id: str):
             return e
     raise HTTPException(404, "Event not found")
 
-@app.post("/api/collect", response_model=CollectResult)
-def trigger_collect(background_tasks: BackgroundTasks, force: bool = False):
-    """Trigger automated collection. Runs in background."""
-    def _run():
-        try:
-            collect_once()
-        except Exception as ex:
-            print(f"Collect failed: {ex}")
-    background_tasks.add_task(_run)
-    return CollectResult(message="Collection started in background", total=len(load_events()))
+@app.post("/api/collect")
+def trigger_collect(background: bool = Query(False), force: bool = False):
+    """Run collection NOW and return result (Render-friendly)."""
+    if background:
+        return {"message": "Use background=false", "total": len(load_events()), "added": 0}
+    try:
+        result = collect_once()
+        return {"ok": True, **result, "events_count": len(load_events())}
+    except Exception as ex:
+        return {
+            "ok": False,
+            "error": str(ex),
+            "events_count": len(load_events()),
+            "message": "Collection failed — check keys and Render logs",
+        }
+
+@app.get("/api/debug")
+def debug_status():
+    """Check keys + data path (no secrets returned)."""
+    data_exists = os.path.isdir(DATA_DIR)
+    events_exists = os.path.isfile(EVENTS_FILE)
+    writable = False
+    write_error = None
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+        test_path = os.path.join(DATA_DIR, ".write_test")
+        with open(test_path, "w") as f:
+            f.write("ok")
+        os.remove(test_path)
+        writable = True
+    except Exception as e:
+        write_error = str(e)
+    return {
+        "tavily_key_set": bool(TAVILY_API_KEY),
+        "ai_key_set": bool(OPENAI_API_KEY),
+        "ai_base_url": AI_BASE_URL,
+        "ai_model": AI_MODEL,
+        "data_dir": DATA_DIR,
+        "data_dir_exists": data_exists,
+        "events_file": EVENTS_FILE,
+        "events_file_exists": events_exists,
+        "data_writable": writable,
+        "write_error": write_error,
+        "events_count": len(load_events()),
+        "cwd": os.getcwd(),
+    }
 
 @app.post("/api/seed")
 def seed_demo():
@@ -114,7 +146,6 @@ def seed_demo():
 
 @app.post("/api/sponsored/{event_id}")
 def mark_sponsored(event_id: str, sponsored: bool = True):
-    """Mark / unmark an event as sponsored (ads appear first)."""
     events = load_events()
     found = False
     for e in events:
@@ -125,8 +156,6 @@ def mark_sponsored(event_id: str, sponsored: bool = True):
     if not found:
         raise HTTPException(404, "Event not found")
     save_events(events)
-
-    # Also persist id list
     data = {"ids": []}
     if os.path.exists(SPONSORED_FILE):
         with open(SPONSORED_FILE) as f:
@@ -152,7 +181,6 @@ def health():
 
 @app.post("/api/events/submit")
 def submit_user_event(payload: dict):
-    """Anyone can post an event (free for now). Duration stored for future billing demo."""
     from collector import make_id, normalize_date, save_events, load_events
     title = (payload.get("title") or "").strip()
     if not title:
@@ -200,7 +228,6 @@ def submit_user_event(payload: dict):
 
 @app.post("/api/events/{event_id}/vote")
 def vote_event(event_id: str, vote: str = Query(..., regex="^(like|dislike)$")):
-    """Like or dislike an event. Used for Trending score."""
     events = load_events()
     found = False
     for e in events:
@@ -217,9 +244,3 @@ def vote_event(event_id: str, vote: str = Query(..., regex="^(like|dislike)$")):
         raise HTTPException(404, "Event not found")
     save_events(events)
     return {"ok": True, "id": event_id, "likes": e["likes"], "dislikes": e["dislikes"]}
-
-# Optional: APScheduler for true self-managing (uncomment on server)
-# from apscheduler.schedulers.background import BackgroundScheduler
-# scheduler = BackgroundScheduler()
-# scheduler.add_job(collect_once, "interval", hours=6, id="collect")
-# scheduler.start()
